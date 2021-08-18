@@ -8,6 +8,7 @@ type Bill struct {
 	items map[string]float64
 	tip float64
 
+
 }
 
 func newBill(name string)Bill {
