@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"strconv"
 	"strings"
 )
 
@@ -28,14 +29,45 @@ func createBill()Bill{
 	}
 	// calling create bill func
 	b := newBill(name)
-	fmt.Println("Creating new bill for - ", b.name)
+	fmt.Println("Creating new bill for: ", b.name)
 	return b
 }
 
 func promptOptions(b Bill){
 	var reader = bufio.NewReader(os.Stdin)
-	opt, _ := getInput("Choose options ( a - add item, s - save the bill, p - add a tip: ", reader)
-	fmt.Println(opt)
+	opt, _ := getInput("Choose options ( a - add item, s - save the bill, t - add a tip: ", reader)
+
+	// create a swtich
+	switch opt {
+	case "a":
+		name, _ := getInput("Item Name: ",reader)
+		price, _:= getInput("Item Price ($s): ",reader)
+		p, err := strconv.ParseFloat(price,64)
+		if err != nil{
+			fmt.Println("Only numbers allowed")
+			promptOptions(b)
+		}
+		// Add Name * Price
+		b.addItem(name,p)
+		fmt.Println("Item ",name," with a price of $",price, " Added")
+		promptOptions(b)
+	case "s":
+		b.saveBill()
+	case "t":
+		tip, _ := getInput("Enter a tip ($): ",reader)
+		t, err := strconv.ParseFloat(tip,64)
+		if err != nil{
+			fmt.Println("Only numbers allowed")
+			promptOptions(b)
+		}
+		b.updateTip(t)
+		fmt.Println("Tip: ($)",tip," Added")
+		promptOptions(b)
+	default:
+		fmt.Println("Invalid Option")
+		promptOptions(b)
+
+	}
 }
 func main(){
 	// fmt.Println("Hello there")
@@ -47,4 +79,6 @@ func main(){
 	// fmt.Println(bill.format())
 	bill:= createBill()
 	promptOptions(bill)
+	format:= bill.format()
+	fmt.Println(format)
 }
