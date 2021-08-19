@@ -1,6 +1,0 @@
-Your bills are
-cusbo:                    ...$12.9
-rooti:                    ...$3.4
-biyo:                     ...$4.5
-Tip:                      ...$19.00
-Total:                    ...$39.80
